@@ -1,4 +1,6 @@
 using FastKartProject.DataAccessLayer;
+using FastKartProject.Services.Implementations;
+using FastKartProject.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace FastKartProject
@@ -13,6 +15,10 @@ namespace FastKartProject
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+            builder.Services.AddHttpContextAccessor();
+
+            builder.Services.AddScoped<IBasketService,BasketService>();
 
             var app = builder.Build();
 
