@@ -19,6 +19,7 @@ namespace FastKartProject
             builder.Services.AddHttpContextAccessor();
 
             builder.Services.AddScoped<IBasketService,BasketService>();
+            builder.Services.AddScoped<IWishlistService,WishlistService>();
 
             var app = builder.Build();
 

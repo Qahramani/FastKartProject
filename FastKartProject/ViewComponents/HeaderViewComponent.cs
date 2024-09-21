@@ -21,7 +21,7 @@ public class HeaderViewComponent : ViewComponent
 
         if (string.IsNullOrEmpty(basketInString))
         {
-            return View(new List<BasketViewModel>());
+            return View(new HeaderViewModel());
         }
 
         var basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(basketInString);
@@ -47,7 +47,7 @@ public class HeaderViewComponent : ViewComponent
         int count = newBasketViewModels.Sum(x => x.Count);
         HeaderViewModel headerViewModel = new HeaderViewModel()
         {
-            BasketViewModels = basketViewModels,
+            BasketViewModels = newBasketViewModels,
             TotalPrice = totalPrice,
             Count = count
         };

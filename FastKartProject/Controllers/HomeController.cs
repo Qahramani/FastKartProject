@@ -41,18 +41,16 @@ namespace FastKartProject.Controllers
 
         public async Task<IActionResult> AddToBasket(int? id)
         {
-            try
-            {
-                await _basketService.AddToBasket(id);
+           var result =  await _basketService.AddToBasket(id);
 
-            }
-            catch (Exception ex)
-            {
-                return NotFound(ex);
-            }
+            if(result.Item1 == 0) return BadRequest(result.Item2);
+            
+
 
             return RedirectToAction(nameof(Index));
         }
+
+      
 
 
     }

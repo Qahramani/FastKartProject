@@ -6,6 +6,6 @@ namespace FastKartProject.Services.Interfaces;
 public interface IBasketService
 {
     Task<List<BasketViewModel>> GetBasket();
-    Task AddToBasket(int? id);
+    Task<(int,string)> AddToBasket(int? id);
 
 }

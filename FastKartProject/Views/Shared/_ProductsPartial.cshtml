@@ -14,7 +14,7 @@
                                      class="img-fluid blur-up lazyload bg-img" alt="">
                             </a>
 
-                            <a href="javascript:void(0)" class="wishlist-top" data-bs-toggle="tooltip"
+                            <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="wishlist-top" data-bs-toggle="tooltip"
                                data-bs-placement="top" title="Wishlist">
                                 <i data-feather="bookmark"></i>
                             </a>
@@ -33,7 +33,7 @@
                                 </li>
 
                                 <li data-bs-toggle="tooltip" data-bs-placement="top" title="Wishlist">
-                                    <a href="wishlist.html" class="notifi-wishlist">
+                                    <a asp-controller="Wishlist" asp-action="AddToWishlist" asp-route-id="@product.Id" class="notifi-wishlist">
                                         <i data-feather="heart"></i>
                                     </a>
                                 </li>

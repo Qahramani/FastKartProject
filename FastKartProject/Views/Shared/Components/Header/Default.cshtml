@@ -609,12 +609,12 @@
                                                 <span class="visually-hidden">unread messages</span>
                                             </span>
                                         </button>
-
                                         <div class="onhover-div">
-                                            <ul class="cart-list">
-                                                @foreach (var product in Model.BasketViewModels)
-                                                {
+
+                                                <ul class="cart-list">
                                                     <li class="product-box-contain">
+                                            @foreach (var product in Model.BasketViewModels)
+                                            {
                                                         <div class="drop-cart">
                                                             <a href="product-left-thumbnail.html" class="drop-image">
                                                                 <img src="~/assets/images/fashion/product/@product.ImageUrl"
@@ -631,11 +631,11 @@
                                                                 </button>
                                                             </div>
                                                         </div>
+                                            }
                                                     </li>
 
-                                                }
 
-                                            </ul>
+                                                </ul>
 
                                             <div class="price-box">
                                                 <h5>Total :</h5>

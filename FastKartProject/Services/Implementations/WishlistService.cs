@@ -7,39 +7,39 @@ using Newtonsoft.Json;
 
 namespace FastKartProject.Services.Implementations;
 
-public class BasketService : IBasketService
+public class WishlistService : IWishlistService
 {
     private readonly AppDbContext _dbContext;
     private readonly IHttpContextAccessor _contextAccessor;
-    private readonly string COOKIE_BASKET_KEY = "basket";
+    private readonly string COOKIE_BASKET_KEY = "wishlist";
 
-    public BasketService(AppDbContext dbContext, IHttpContextAccessor contextAccessor)
+    public WishlistService(AppDbContext dbContext, IHttpContextAccessor contextAccessor)
     {
         _dbContext = dbContext;
         _contextAccessor = contextAccessor;
     }
 
-    public async Task<(int, string)> AddToBasket(int? id)
+    public async Task<int> AddToWishlist(int? id)
     {
         var product = await _dbContext.Products.FindAsync(id);
 
-        var basketViewModels = new List<BasketViewModel>();
+        var wishlistViewModels = new List<WishlistViewModel>();
 
         if (product is null)
-            return (0, "product is null");
+            return 0;
 
         var basket = _contextAccessor.HttpContext.Request.Cookies[COOKIE_BASKET_KEY];
 
         if (basket is not null)
-            basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(basket);
+            wishlistViewModels = JsonConvert.DeserializeObject<List<WishlistViewModel>>(basket);
 
-        var existProduct = basketViewModels.FirstOrDefault(x => x.ProductId == id);
+        var existProduct = wishlistViewModels.FirstOrDefault(x => x.ProductId == id);
 
         if (existProduct is not null)
             existProduct.Count++;
         else
         {
-            basketViewModels.Add(new BasketViewModel
+            wishlistViewModels.Add(new WishlistViewModel
             {
                 ProductId = product.Id,
                 Name = product.Name,
@@ -49,30 +49,31 @@ public class BasketService : IBasketService
             });
         }
 
-        var json = JsonConvert.SerializeObject(basketViewModels);
+        var json = JsonConvert.SerializeObject(wishlistViewModels);
 
         _contextAccessor.HttpContext.Response.Cookies.Append(COOKIE_BASKET_KEY, json);
-        return (1,"product is added!");
+
+        return 1;
     }
 
-    public async Task<List<BasketViewModel>> GetBasket()
+    public async Task<List<WishlistViewModel>> GetWishlist()
     {
         string? basket = _contextAccessor.HttpContext?.Request.Cookies[COOKIE_BASKET_KEY];
 
-        var basketViewModels = new List<BasketViewModel>();
+        var wishlistViewModels = new List<WishlistViewModel>();
 
         if (basket is not null)
-            basketViewModels = JsonConvert.DeserializeObject<List<BasketViewModel>>(basket);
+            wishlistViewModels = JsonConvert.DeserializeObject<List<WishlistViewModel>>(basket);
 
-        var newBasketViewModels = new List<BasketViewModel>();
+        var newWishlistViewModels = new List<WishlistViewModel>();
 
-        foreach (var product in basketViewModels)
+        foreach (var product in wishlistViewModels)
         {
             var existProduct = await _dbContext.Products.FindAsync(product.ProductId);
 
             if (existProduct is null) continue;
 
-            newBasketViewModels.Add(new BasketViewModel()
+            newWishlistViewModels.Add(new WishlistViewModel()
             {
                 ProductId = existProduct.Id,
                 ImageUrl = existProduct.ImageUrl,
@@ -82,7 +83,7 @@ public class BasketService : IBasketService
             });
         }
 
-        return newBasketViewModels;
+        return newWishlistViewModels;
 
     }
 }
